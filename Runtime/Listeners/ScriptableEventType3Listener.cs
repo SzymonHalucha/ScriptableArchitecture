@@ -11,15 +11,15 @@ namespace SH.ScriptableArchitecture.Listeners
 
         private void OnEnable()
         {
-            scriptableEvent.AddListener(OnEventInvoked);
+            scriptableEvent.AddListener(OnEventRaised);
         }
 
         private void OnDisable()
         {
-            scriptableEvent.RemoveListener(OnEventInvoked);
+            scriptableEvent.RemoveListener(OnEventRaised);
         }
 
-        public void OnEventInvoked(T0 argument1, T1 argument2, T2 argument3)
+        public void OnEventRaised(T0 argument1, T1 argument2, T2 argument3)
         {
             onEvent.Invoke(argument1, argument2, argument3);
         }

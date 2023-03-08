@@ -6,18 +6,33 @@ namespace SH.ScriptableArchitecture.Variables
 {
     public abstract class BaseVariable<T> : ScriptableEventType1<T>
     {
+        [SerializeField] private T initialValue;
         [NonSerialized] private T value;
+        [NonSerialized] private bool isInitialized = false;
 
         public T Value
         {
             get
             {
+                if (isInitialized)
+                    return value;
+
+                value = initialValue;
+                isInitialized = true;
+                Raise(value);
                 return value;
             }
             set
             {
+                if (isInitialized && this.value.Equals(value))
+                {
+                    Debug.LogWarning($"(Scriptable Architecture) Value of {this} is already {value}.");
+                    return;
+                }
+
+                isInitialized = true;
                 this.value = value;
-                Invoke(value);
+                Raise(value);
             }
         }
 

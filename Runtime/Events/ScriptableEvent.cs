@@ -11,10 +11,10 @@ namespace SH.ScriptableArchitecture.Events
         private HashSet<ScriptableEventListener> listeners = new();
         private HashSet<Action> actionListeners = new();
 
-        public void Invoke()
+        public void Raise()
         {
             foreach (ScriptableEventListener listener in listeners)
-                listener.OnEventInvoked();
+                listener.OnEventRaised();
 
             foreach (Action actionListener in actionListeners)
                 actionListener.Invoke();

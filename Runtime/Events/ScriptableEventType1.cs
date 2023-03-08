@@ -10,10 +10,10 @@ namespace SH.ScriptableArchitecture.Events
         private HashSet<ScriptableEventType1Listener<T>> listeners = new();
         private HashSet<Action<T>> actionListeners = new();
 
-        public void Invoke(T argument)
+        public void Raise(T argument)
         {
             foreach (ScriptableEventType1Listener<T> listener in listeners)
-                listener.OnEventInvoked(argument);
+                listener.OnEventRaised(argument);
 
             foreach (Action<T> actionListener in actionListeners)
                 actionListener.Invoke(argument);
