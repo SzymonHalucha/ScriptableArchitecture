@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SH.ScriptableArchitecture.Variables.Primitives
 {
-    [CreateAssetMenu(menuName = "SH/Scriptable Architecture/Variables/Primitives/Double")]
+    [CreateAssetMenu(menuName = "SH/Scriptable Architecture/Variables/Primitives/Double", fileName = "New Double Variable")]
     public class DoubleVariable : BaseVariable<double>
     {
         public static DoubleVariable operator +(DoubleVariable variable, double value)

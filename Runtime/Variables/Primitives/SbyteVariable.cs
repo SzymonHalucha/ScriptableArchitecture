@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SH.ScriptableArchitecture.Variables.Primitives
 {
-    [CreateAssetMenu(menuName = "SH/Scriptable Architecture/Variables/Primitives/Sbyte")]
+    [CreateAssetMenu(menuName = "SH/Scriptable Architecture/Variables/Primitives/Sbyte", fileName = "New Sbyte Variable")]
     public class SbyteVariable : BaseVariable<sbyte>
     {
         public static SbyteVariable operator +(SbyteVariable variable, sbyte value)

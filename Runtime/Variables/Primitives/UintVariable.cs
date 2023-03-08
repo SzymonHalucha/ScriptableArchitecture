@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SH.ScriptableArchitecture.Variables.Primitives
 {
-    [CreateAssetMenu(menuName = "SH/Scriptable Architecture/Variables/Primitives/Uint")]
+    [CreateAssetMenu(menuName = "SH/Scriptable Architecture/Variables/Primitives/Uint", fileName = "New Uint Variable")]
     public class UintVariable : BaseVariable<uint>
     {
         public static UintVariable operator +(UintVariable variable, uint value)
