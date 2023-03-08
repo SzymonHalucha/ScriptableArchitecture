@@ -194,10 +194,10 @@ namespace SH.ScriptableArchitecture.Editor
             if (!Directory.Exists(Path.GetDirectoryName($"{paths.ScriptPath}/Events/")))
                 Directory.CreateDirectory($"{paths.ScriptPath}/Events/");
 
-            if (!File.Exists($"{paths.ScriptPath}/Events/{paths.ObjectName}Event.cs"))
-                File.Create($"{paths.ScriptPath}/Events/{paths.ObjectName}Event.cs").Close();
+            if (!File.Exists($"{paths.ScriptPath}/Events/{paths.ObjectName}ScriptableEvent.cs"))
+                File.Create($"{paths.ScriptPath}/Events/{paths.ObjectName}ScriptableEvent.cs").Close();
 
-            File.WriteAllText($"{paths.ScriptPath}/Events/{paths.ObjectName}Event.cs", template);
+            File.WriteAllText($"{paths.ScriptPath}/Events/{paths.ObjectName}ScriptableEvent.cs", template);
             AssetDatabase.Refresh();
         }
 
@@ -213,10 +213,10 @@ namespace SH.ScriptableArchitecture.Editor
             if (!Directory.Exists(Path.GetDirectoryName($"{paths.ScriptPath}/Listeners/")))
                 Directory.CreateDirectory($"{paths.ScriptPath}/Listeners/");
 
-            if (!File.Exists($"{paths.ScriptPath}/Listeners/{paths.ObjectName}Listener.cs"))
-                File.Create($"{paths.ScriptPath}/Listeners/{paths.ObjectName}Listener.cs").Close();
+            if (!File.Exists($"{paths.ScriptPath}/Listeners/{paths.ObjectName}ScriptableEventListener.cs"))
+                File.Create($"{paths.ScriptPath}/Listeners/{paths.ObjectName}ScriptableEventListener.cs").Close();
 
-            File.WriteAllText($"{paths.ScriptPath}/Listeners/{paths.ObjectName}Listener.cs", template);
+            File.WriteAllText($"{paths.ScriptPath}/Listeners/{paths.ObjectName}ScriptableEventListener.cs", template);
             AssetDatabase.Refresh();
         }
     }
