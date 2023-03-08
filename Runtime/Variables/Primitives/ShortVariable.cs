@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SH.ScriptableArchitecture.Variables.Primitives
 {
-    [CreateAssetMenu(menuName = "SH/Scriptable Architecture/Variables/Short")]
+    [CreateAssetMenu(menuName = "SH/Scriptable Architecture/Variables/Primitives/Short")]
     public class ShortVariable : BaseVariable<short>
     {
         public static ShortVariable operator +(ShortVariable variable, short value)

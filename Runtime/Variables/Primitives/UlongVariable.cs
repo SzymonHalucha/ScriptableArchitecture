@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SH.ScriptableArchitecture.Variables.Primitives
 {
-    [CreateAssetMenu(menuName = "SH/Scriptable Architecture/Variables/Ulong")]
+    [CreateAssetMenu(menuName = "SH/Scriptable Architecture/Variables/Primitives/Ulong")]
     public class UlongVariable : BaseVariable<ulong>
     {
         public static UlongVariable operator +(UlongVariable variable, ulong value)

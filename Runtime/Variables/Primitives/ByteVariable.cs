@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SH.ScriptableArchitecture.Variables.Primitives
 {
-    [CreateAssetMenu(menuName = "SH/Scriptable Architecture/Variables/Byte")]
+    [CreateAssetMenu(menuName = "SH/Scriptable Architecture/Variables/Primitives/Byte")]
     public class ByteVariable : BaseVariable<byte>
     {
         public static ByteVariable operator +(ByteVariable variable, byte value)

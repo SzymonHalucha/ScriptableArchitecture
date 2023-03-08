@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SH.ScriptableArchitecture.Variables.Primitives
 {
-    [CreateAssetMenu(menuName = "SH/Scriptable Architecture/Variables/Long")]
+    [CreateAssetMenu(menuName = "SH/Scriptable Architecture/Variables/Primitives/Long")]
     public class LongVariable : BaseVariable<long>
     {
         public static LongVariable operator +(LongVariable variable, long value)

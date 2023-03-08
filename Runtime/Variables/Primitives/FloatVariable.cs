@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SH.ScriptableArchitecture.Variables.Primitives
 {
-    [CreateAssetMenu(menuName = "SH/Scriptable Architecture/Variables/Float")]
+    [CreateAssetMenu(menuName = "SH/Scriptable Architecture/Variables/Primitives/Float")]
     public class FloatVariable : BaseVariable<float>
     {
         public static FloatVariable operator +(FloatVariable variable, float value)

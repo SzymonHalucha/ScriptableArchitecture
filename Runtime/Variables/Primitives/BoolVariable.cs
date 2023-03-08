@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SH.ScriptableArchitecture.Variables.Primitives
 {
-    [CreateAssetMenu(menuName = "SH/Scriptable Architecture/Variables/Bool")]
+    [CreateAssetMenu(menuName = "SH/Scriptable Architecture/Variables/Primitives/Bool")]
     public class BoolVariable : BaseVariable<bool>
     {
         public static BoolVariable operator !(BoolVariable variable)
