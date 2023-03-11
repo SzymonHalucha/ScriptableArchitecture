@@ -1,17 +1,20 @@
-using UnityEngine;
-
 namespace SH.ScriptableArchitecture.Editor
 {
-    public class GeneratorWindowData : ScriptableObject
+    public static class GeneratorPrefs
     {
-        [HideInInspector] public Object SelectedObject = null;
-        [HideInInspector] public string DataPath = "Data/Architecture";
-        [HideInInspector] public string ScriptPath = "Scripts/Architecture";
-        [HideInInspector] public string Namespace = "Scripts.Architecture";
-        [HideInInspector] public string ContextMenuPath = "Architecture";
+        public const string DataPathKey = "ScriptableArchitectureDataPath";
+        public const string DataPathValue = "Data/Architecture";
 
-        [HideInInspector]
-        public string VariableTemplateScript =
+        public const string ScriptPathKey = "ScriptableArchitectureScriptPath";
+        public const string ScriptPathValue = "Scripts/Architecture";
+
+        public const string NamespaceKey = "ScriptableArchitectureNamespace";
+        public const string NamespaceValue = "Scripts.Architecture";
+
+        public const string ContextMenuPathKey = "ScriptableArchitectureContextMenuPath";
+        public const string ContextMenuPathValue = "Architecture";
+
+        public const string VariableTemplateScript =
 @"using UnityEngine;
 using SH.ScriptableArchitecture.Variables;
 
@@ -20,12 +23,11 @@ namespace %NAMESPACE%.Variables
     [CreateAssetMenu(menuName = ""%CONTEXTMENU%/Variables/%NAME%"", fileName = ""New %NAME% Variable"")]
     public class %NAME%Variable : BaseVariable<%NAME%>
     {
-        
+
     }
 }";
 
-        [HideInInspector]
-        public string EventTemplateScript =
+        public const string EventTemplateScript =
 @"using UnityEngine;
 using SH.ScriptableArchitecture.Events;
 
@@ -38,8 +40,7 @@ namespace %NAMESPACE%.Events
     }
 }";
 
-        [HideInInspector]
-        public string ListenerTemplateScript =
+        public const string ListenerTemplateScript =
 @"using SH.ScriptableArchitecture.Listeners;
 
 namespace %NAMESPACE%.Listeners

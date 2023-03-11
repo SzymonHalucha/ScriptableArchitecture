@@ -1,6 +1,6 @@
 {
     "name": "com.sh.scriptablearchitecture",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "displayName": "Scriptable Architecture",
     "description": "Game architecture package based on ScriptableObjects.",
     "unity": "2021.3",

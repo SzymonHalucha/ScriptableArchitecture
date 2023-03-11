@@ -8,7 +8,7 @@ namespace SH.ScriptableArchitecture.Editor
 {
     public class GeneratorWindow : EditorWindow
     {
-        private SerializedObject serializedData;
+        private Object selectedObject;
 
         [MenuItem("Tools/Scriptable Architecture Generator")]
         private static void OpenWindow()
@@ -21,10 +21,7 @@ namespace SH.ScriptableArchitecture.Editor
 
         private void CreateGUI()
         {
-            string[] paths = AssetDatabase.FindAssets("t:SH.ScriptableArchitecture.Editor.GeneratorWindowData");
-            GeneratorWindowData data = AssetDatabase.LoadAssetAtPath<GeneratorWindowData>(AssetDatabase.GUIDToAssetPath(paths[0]));
-            serializedData = new SerializedObject(data);
-
+            CreateGeneratorEditorPrefs();
             rootVisualElement.Add(CreateTitleLabel());
             rootVisualElement.Add(CreateObjectField());
             rootVisualElement.Add(CreateDataPathTextField());
@@ -54,10 +51,9 @@ namespace SH.ScriptableArchitecture.Editor
         private ObjectField CreateObjectField()
         {
             ObjectField objectField = new ObjectField();
-            objectField.value = serializedData.FindProperty("SelectedObject").objectReferenceValue;
-            objectField.BindProperty(serializedData.FindProperty("SelectedObject"));
             objectField.objectType = typeof(Object);
             objectField.allowSceneObjects = false;
+            objectField.RegisterCallback<ChangeEvent<Object>>(evt => selectedObject = evt.newValue);
             objectField.label = "Selected Object";
             return objectField;
         }
@@ -65,8 +61,8 @@ namespace SH.ScriptableArchitecture.Editor
         private VisualElement CreateDataPathTextField()
         {
             TextField textField = new TextField();
-            textField.value = serializedData.FindProperty("DataPath").stringValue;
-            textField.BindProperty(serializedData.FindProperty("DataPath"));
+            textField.value = EditorPrefs.GetString(GeneratorPrefs.DataPathKey);
+            textField.RegisterCallback<ChangeEvent<string>>(evt => EditorPrefs.SetString(GeneratorPrefs.DataPathKey, evt.newValue));
             textField.label = "Path for Data";
             return textField;
         }
@@ -74,8 +70,8 @@ namespace SH.ScriptableArchitecture.Editor
         private VisualElement CreateScriptPathTextField()
         {
             TextField textField = new TextField();
-            textField.value = serializedData.FindProperty("ScriptPath").stringValue;
-            textField.BindProperty(serializedData.FindProperty("ScriptPath"));
+            textField.value = EditorPrefs.GetString(GeneratorPrefs.ScriptPathKey);
+            textField.RegisterCallback<ChangeEvent<string>>(evt => EditorPrefs.SetString(GeneratorPrefs.ScriptPathKey, evt.newValue));
             textField.label = "Path for Script";
             return textField;
         }
@@ -83,8 +79,8 @@ namespace SH.ScriptableArchitecture.Editor
         private VisualElement CreateNamespaceTextField()
         {
             TextField textField = new TextField();
-            textField.value = serializedData.FindProperty("Namespace").stringValue;
-            textField.BindProperty(serializedData.FindProperty("Namespace"));
+            textField.value = EditorPrefs.GetString(GeneratorPrefs.NamespaceKey);
+            textField.RegisterCallback<ChangeEvent<string>>(evt => EditorPrefs.SetString(GeneratorPrefs.NamespaceKey, evt.newValue));
             textField.label = "Namespace";
             return textField;
         }
@@ -92,8 +88,8 @@ namespace SH.ScriptableArchitecture.Editor
         private VisualElement CreateContextMenuPathTextField()
         {
             TextField textField = new TextField();
-            textField.value = serializedData.FindProperty("ContextMenuPath").stringValue;
-            textField.BindProperty(serializedData.FindProperty("ContextMenuPath"));
+            textField.value = EditorPrefs.GetString(GeneratorPrefs.ContextMenuPathKey);
+            textField.RegisterCallback<ChangeEvent<string>>(evt => EditorPrefs.SetString(GeneratorPrefs.ContextMenuPathKey, evt.newValue));
             textField.label = "Context Menu Path";
             return textField;
         }
@@ -137,36 +133,58 @@ namespace SH.ScriptableArchitecture.Editor
             return button;
         }
 
+        private void CreateGeneratorEditorPrefs()
+        {
+            if (!EditorPrefs.HasKey(GeneratorPrefs.DataPathKey))
+                EditorPrefs.SetString(GeneratorPrefs.DataPathKey, GeneratorPrefs.DataPathValue);
+
+            if (!EditorPrefs.HasKey(GeneratorPrefs.ScriptPathKey))
+                EditorPrefs.SetString(GeneratorPrefs.ScriptPathKey, GeneratorPrefs.ScriptPathValue);
+
+            if (!EditorPrefs.HasKey(GeneratorPrefs.NamespaceKey))
+                EditorPrefs.SetString(GeneratorPrefs.NamespaceKey, GeneratorPrefs.NamespaceValue);
+
+            if (!EditorPrefs.HasKey(GeneratorPrefs.ContextMenuPathKey))
+                EditorPrefs.SetString(GeneratorPrefs.ContextMenuPathKey, GeneratorPrefs.ContextMenuPathValue);
+        }
+
         private void OnResetButtonClicked()
         {
-            serializedData.FindProperty("SelectedObject").objectReferenceValue = null;
-            serializedData.FindProperty("DataPath").stringValue = "Data/Architecture";
-            serializedData.FindProperty("ScriptPath").stringValue = "Scripts/Architecture";
-            serializedData.FindProperty("Namespace").stringValue = "Scripts.Architecture";
-            serializedData.FindProperty("ContextMenuPath").stringValue = "Architecture";
-            serializedData.ApplyModifiedProperties();
+            EditorPrefs.SetString(GeneratorPrefs.DataPathKey, GeneratorPrefs.DataPathValue);
+            EditorPrefs.SetString(GeneratorPrefs.ScriptPathKey, GeneratorPrefs.ScriptPathValue);
+            EditorPrefs.SetString(GeneratorPrefs.NamespaceKey, GeneratorPrefs.NamespaceValue);
+            EditorPrefs.SetString(GeneratorPrefs.ContextMenuPathKey, GeneratorPrefs.ContextMenuPathValue);
+
+            rootVisualElement.Clear();
+            CreateGUI();
         }
 
         private (string ScriptPath, string DataPath, string ObjectName) GetPaths()
         {
-            string scriptPath = $"{Application.dataPath}/{serializedData.FindProperty("ScriptPath").stringValue}";
-            string dataPath = $"{Application.dataPath}/{serializedData.FindProperty("DataPath").stringValue}";
-            string objectName = serializedData.FindProperty("SelectedObject").objectReferenceValue.name;
+            string scriptPath = $"{Application.dataPath}/{EditorPrefs.GetString(GeneratorPrefs.ScriptPathKey)}";
+            string dataPath = $"{Application.dataPath}/{EditorPrefs.GetString(GeneratorPrefs.DataPathKey)}";
+            string objectName = selectedObject.name;
             return (scriptPath, dataPath, objectName);
         }
 
         private string FormatTemplate(string template, string objectName)
         {
-            template = template.Replace("%NAMESPACE%", serializedData.FindProperty("Namespace").stringValue);
-            template = template.Replace("%CONTEXTMENU%", serializedData.FindProperty("ContextMenuPath").stringValue);
+            template = template.Replace("%NAMESPACE%", EditorPrefs.GetString(GeneratorPrefs.NamespaceKey));
+            template = template.Replace("%CONTEXTMENU%", EditorPrefs.GetString(GeneratorPrefs.ContextMenuPathKey));
             template = template.Replace("%NAME%", objectName);
             return template;
         }
 
         private void OnCreateVariableButtonClicked()
         {
+            if (selectedObject == null)
+            {
+                Debug.LogWarning("No object selected.");
+                return;
+            }
+
             var paths = GetPaths();
-            string template = serializedData.FindProperty("VariableTemplateScript").stringValue;
+            string template = GeneratorPrefs.VariableTemplateScript;
             template = FormatTemplate(template, paths.ObjectName);
 
             if (!Directory.Exists(Path.GetDirectoryName($"{paths.ScriptPath}")))
@@ -184,8 +202,14 @@ namespace SH.ScriptableArchitecture.Editor
 
         private void OnCreateEventButtonClicked()
         {
+            if (selectedObject == null)
+            {
+                Debug.LogWarning("No object selected.");
+                return;
+            }
+
             var paths = GetPaths();
-            string template = serializedData.FindProperty("EventTemplateScript").stringValue;
+            string template = GeneratorPrefs.EventTemplateScript;
             template = FormatTemplate(template, paths.ObjectName);
 
             if (!Directory.Exists(Path.GetDirectoryName($"{paths.ScriptPath}")))
@@ -203,8 +227,14 @@ namespace SH.ScriptableArchitecture.Editor
 
         private void OnCreateListenerButtonClicked()
         {
+            if (selectedObject == null)
+            {
+                Debug.LogWarning("No object selected.");
+                return;
+            }
+
             var paths = GetPaths();
-            string template = serializedData.FindProperty("ListenerTemplateScript").stringValue;
+            string template = GeneratorPrefs.ListenerTemplateScript;
             template = FormatTemplate(template, paths.ObjectName);
 
             if (!Directory.Exists(Path.GetDirectoryName($"{paths.ScriptPath}")))
